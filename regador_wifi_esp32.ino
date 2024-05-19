@@ -3,11 +3,11 @@
 
 const char* ssid = "ELIAS VIVO 2.4G";       // SSID da sua rede Wi-Fi
 const char* password = "lara1305";  // Senha da sua rede Wi-Fi
-const char* server_ip = "192.168.15.88";
+const char* server_ip = "44.206.253.220 ";
 const int server_port = 4000;
 
-const int sensor_pin = A0; // Pino analógico onde o sensor de umidade do solo está conectado
-const int rele_pin = 5; // Pino digital onde o relé está conectado
+const int sensor_pin = 35; // Pino analógico onde o sensor de umidade do solo está conectado (GPIO 35 no ESP32)
+const int rele_pin = 2; // Pino digital onde o relé está conectado (GPIO 2 no ESP32)
 
 const int limite_umidade_alta = 601;  // Limite inferior para umidade alta (valor do ADC)
 const int limite_umidade_baixa = 1023; // Limite superior para umidade baixa (valor do ADC)
