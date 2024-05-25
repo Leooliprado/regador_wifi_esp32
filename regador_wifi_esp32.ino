@@ -2,17 +2,16 @@
 #include <HTTPClient.h>
 
 const char* ssid = "ELIAS VIVO 2.4G";       // SSID da sua rede Wi-Fi
-const char* password = "lara1305";  // Senha da sua rede Wi-Fi
-const char* server_ip = "44.206.253.220 ";
+const char* password = "lara1305";          // Senha da sua rede Wi-Fi
+const char* server_ip = "44.206.253.220";
 const int server_port = 4000;
 
-const int sensor_pin = 35; // Pino analógico onde o sensor de umidade do solo está conectado (GPIO 35 no ESP32)
-const int rele_pin = 2; // Pino digital onde o relé está conectado (GPIO 2 no ESP32)
+const int sensor_pin = 35;  // Pino analógico onde o sensor de umidade do solo está conectado (GPIO 35 no ESP32)
+const int rele_pin = 2;     // Pino digital onde o relé está conectado (GPIO 2 no ESP32)
 
-const int limite_umidade_alta = 601;  // Limite inferior para umidade alta (valor do ADC)
-const int limite_umidade_baixa = 1023; // Limite superior para umidade baixa (valor do ADC)
+const int limite_umidade_alta = 3001;  // Limite inferior para umidade alta (valor do ADC)
 
-float umidade_solo = 0.0; // Valor inicial da umidade do solo
+int valor_analogico = 0; // Valor inicial da leitura analógica
 
 void setup() {
   Serial.begin(115200);
@@ -34,47 +33,48 @@ void setup() {
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
     // Ler a umidade do solo
-    umidade_solo = lerUmidadeSolo();
+    valor_analogico = lerUmidadeSolo();
 
     // Enviar leitura para o servidor
-    enviarParaServidor(umidade_solo);
+    enviarParaServidor(valor_analogico);
 
     // Verificar umidade do solo e acionar relé se necessário
-    controlarRele(umidade_solo);
+    controlarRele(valor_analogico);
 
-    delay(5000); // Aguardar 5 segundos antes de enviar outra leitura
+    delay(2000); // Aguardar 2 segundos antes de enviar outra leitura
   }
 }
 
-float lerUmidadeSolo() {
+int lerUmidadeSolo() {
   int valor_analogico = analogRead(sensor_pin);
-  // Faça o mapeamento do valor lido para a faixa de umidade do solo
-  float umidade = map(valor_analogico, limite_umidade_alta, limite_umidade_baixa, 100, 0);
-  return umidade;
+  Serial.print("Valor analógico lido: ");
+  Serial.println(valor_analogico);
+  
+  return valor_analogico;
 }
 
-void enviarParaServidor(float umidade) {
+void enviarParaServidor(int valor_analogico) {
   HTTPClient http;
 
   // Construir a URL
   String url = "http://" + String(server_ip) + ":" + String(server_port) + "/umidade";
 
-  Serial.print("Enviando umidade do solo: ");
-  Serial.println(umidade);
+  Serial.print("Enviando valor analógico de umidade do solo: ");
+  Serial.println(valor_analogico);
 
   http.begin(url); // Iniciar conexão HTTP
   http.addHeader("Content-Type", "application/x-www-form-urlencoded"); // Adicionar cabeçalho para requisição POST
 
   // Enviar solicitação POST com dados no corpo
-  String postData = "dados=" + String(umidade);
+  String postData = "dados=" + String(valor_analogico);
   int httpCode = http.POST(postData);
 
   if (httpCode > 0) {
     // Verificar código de resposta
     if (httpCode == HTTP_CODE_OK) {
-      Serial.println("Umidade do solo enviada com sucesso!");
+      Serial.println("Valor analógico de umidade do solo enviado com sucesso!");
     } else {
-      Serial.print("Falha ao enviar umidade do solo. Código de erro HTTP: ");
+      Serial.print("Falha ao enviar valor analógico de umidade do solo. Código de erro HTTP: ");
       Serial.println(httpCode);
     }
   } else {
@@ -85,9 +85,9 @@ void enviarParaServidor(float umidade) {
   http.end(); // Fechar conexão HTTP
 }
 
-void controlarRele(float umidade) {
-  // Considera-se umidade baixa quando a leitura do ADC está entre 601 e 1023
-  if (analogRead(sensor_pin) >= limite_umidade_alta && analogRead(sensor_pin) <= limite_umidade_baixa) {
+void controlarRele(int valor_analogico) {
+  // Considera-se umidade baixa quando a leitura do ADC está entre limite_umidade_alta e limite_umidade_baixa
+  if (valor_analogico >= limite_umidade_alta) {
     Serial.println("Umidade baixa, acionando relé...");
     digitalWrite(rele_pin, HIGH); // Liga o relé
   } else {
