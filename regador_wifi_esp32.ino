@@ -35,11 +35,11 @@ void loop() {
     // Ler a umidade do solo
     valor_analogico = lerUmidadeSolo();
 
-    // Enviar leitura para o servidor
-    enviarParaServidor(valor_analogico);
-
     // Verificar umidade do solo e acionar relé se necessário
     controlarRele(valor_analogico);
+
+    // Enviar leitura para o servidor
+    enviarParaServidor(valor_analogico);
 
     delay(2000); // Aguardar 2 segundos antes de enviar outra leitura
   }
