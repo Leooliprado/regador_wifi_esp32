@@ -27,6 +27,8 @@ void setup() {
   Serial.println("Conectado ao WiFi com sucesso!");
 
   pinMode(rele_pin, OUTPUT); // Configurar o pino do relé como saída
+  pinMode(sensor_pin,INPUT);
+  
   digitalWrite(rele_pin, LOW); // Inicialmente desliga o relé
 }
 
