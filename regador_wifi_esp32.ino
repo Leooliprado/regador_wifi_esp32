@@ -7,28 +7,36 @@ const char* server_ip = "44.206.253.220";
 const int server_port = 4000;
 
 const int sensor_pin = 35;  // Pino analógico onde o sensor de umidade do solo está conectado (GPIO 35 no ESP32)
-const int rele_pin = 2;     // Pino digital onde o relé está conectado (GPIO 2 no ESP32)
+const int rele_pin = 4;     // Pino digital onde o relé está conectado (GPIO 18 no ESP32)
+const int estado_pin = 2; // ve o estado da conequisao e o estato da bomba
 
 const int limite_umidade_alta = 3001;  // Limite inferior para umidade alta (valor do ADC)
 
 int valor_analogico = 0; // Valor inicial da leitura analógica
 
 void setup() {
+ 
+
   Serial.begin(115200);
   WiFi.begin(ssid, password);
 
   Serial.println("Conectando ao WiFi...");
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
     Serial.println("Conectando...");
+    
+    digitalWrite(estado_pin, HIGH); 
+    delay(500);
+    digitalWrite(estado_pin, LOW); 
+    delay(500);
   }
 
   Serial.println("Conectado ao WiFi com sucesso!");
 
-  pinMode(rele_pin, OUTPUT); // Configurar o pino do relé como saída
+  pinMode(rele_pin, OUTPUT); 
+  digitalWrite(rele_pin, LOW);
+  pinMode(estado_pin, OUTPUT);
   pinMode(sensor_pin,INPUT);
-  
 }
 
 void loop() {
@@ -51,8 +59,12 @@ void loop() {
     Serial.println("Conectando ao WiFi...");
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
     Serial.println("Conectando...");
+
+    digitalWrite(estado_pin, HIGH); //led para ver status de conexão
+    delay(500);
+    digitalWrite(estado_pin, LOW); //led para ver status de conexão
+    delay(500);
   }
 
     Serial.println("Conectado ao WiFi com sucesso!");
@@ -104,8 +116,12 @@ void controlarRele(int valor_analogico) {
   if (valor_analogico >= limite_umidade_alta) {
     Serial.println("Umidade baixa, acionando relé...");
     digitalWrite(rele_pin, HIGH); // Liga o relé
+
+    digitalWrite(estado_pin, HIGH);  //led de para ver o status da bomba d'água
   } else {
     Serial.println("Umidade normal, desligando relé...");
     digitalWrite(rele_pin, LOW); // Desliga o relé
+
+    digitalWrite(estado_pin, LOW); //led de para ver o status da bomba d'água
   }
 }
