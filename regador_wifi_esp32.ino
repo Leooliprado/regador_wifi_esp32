@@ -29,7 +29,6 @@ void setup() {
   pinMode(rele_pin, OUTPUT); // Configurar o pino do relé como saída
   pinMode(sensor_pin,INPUT);
   
-  digitalWrite(rele_pin, LOW); // Inicialmente desliga o relé
 }
 
 void loop() {
@@ -44,6 +43,19 @@ void loop() {
     enviarParaServidor(valor_analogico);
 
     delay(2000); // Aguardar 2 segundos antes de enviar outra leitura
+  }else{
+    Serial.println("Erro de conexão!! Talvez a internet caiu?");
+
+    WiFi.begin(ssid, password);
+
+    Serial.println("Conectando ao WiFi...");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Conectando...");
+  }
+
+    Serial.println("Conectado ao WiFi com sucesso!");
   }
 }
 
