@@ -41,6 +41,7 @@ void setup() {
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Conectado ao WiFi com sucesso!");
     // Ler a umidade do solo
     valor_analogico = lerUmidadeSolo();
 
@@ -58,16 +59,10 @@ void loop() {
 
     Serial.println("Conectando ao WiFi...");
 
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Conectando...");
-
     digitalWrite(estado_pin, HIGH); //led para ver status de conexão
     delay(500);
     digitalWrite(estado_pin, LOW); //led para ver status de conexão
     delay(500);
-  }
-
-    Serial.println("Conectado ao WiFi com sucesso!");
   }
 }
 
