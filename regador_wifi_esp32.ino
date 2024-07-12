@@ -45,11 +45,11 @@ void loop() {
     // Ler a umidade do solo
     valor_analogico = lerUmidadeSolo();
 
-    // Verificar umidade do solo e acionar relé se necessário
-    controlarRele(valor_analogico);
-
     // Enviar leitura para o servidor
     enviarParaServidor(valor_analogico);
+
+    // Verificar umidade do solo e acionar relé se necessário
+    controlarRele(valor_analogico);
 
     delay(2000); // Aguardar 2 segundos antes de enviar outra leitura
   }else{
@@ -113,6 +113,8 @@ void controlarRele(int valor_analogico) {
     digitalWrite(rele_pin, HIGH); // Liga o relé
 
     digitalWrite(estado_pin, HIGH);  //led de para ver o status da bomba d'água
+
+    delay(6000);
   } else {
     Serial.println("Umidade normal, desligando relé...");
     digitalWrite(rele_pin, LOW); // Desliga o relé
