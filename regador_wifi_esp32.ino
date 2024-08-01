@@ -51,9 +51,12 @@ void loop() {
     // Verificar umidade do solo e acionar relé se necessário
     controlarRele(valor_analogico);
 
+  
     delay(2000); // Aguardar 2 segundos antes de enviar outra leitura
   }else{
     Serial.println("Erro de conexão!! Talvez a internet caiu?");
+
+    digitalWrite(rele_pin, LOW); // Desliga o relé
 
     WiFi.begin(ssid, password);
 
