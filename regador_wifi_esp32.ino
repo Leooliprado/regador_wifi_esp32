@@ -11,7 +11,7 @@ const int sensor_pin = 35;  // Pino analógico onde o sensor de umidade do solo 
 const int rele_pin = 4;     // Pino digital onde o relé está conectado (GPIO 18 no ESP32)
 const int estado_pin = 2;   // ve o estado da conequisao e o estato da bomba
 
-const int limite_umidade_alta = 1600;  // Limite inferior para umidade alta (valor do ADC)
+const int limite_umidade_alta = 1400;  // Limite inferior para umidade alta (valor do ADC)
 
 int valor_analogico = 0;  // Valor inicial da leitura analógica
 bool vai_chover = false;  // Variável global para armazenar o resultado da função VaiChoverServidor()
