@@ -20,3 +20,4 @@
 
 ## Front end código: https://github.com/Leooliprado/regador_wifi_app
 ## Back end código: https://github.com/Leooliprado/regador_wifi
+## Banco de dados: https://github.com/Leooliprado/regador_banco
