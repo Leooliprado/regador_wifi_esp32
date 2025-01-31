@@ -10,7 +10,7 @@ O **WateringCan** é um sistema de irrigação automática inteligente e avança
 - **Atualizações em Tempo Real:** Envia notificações e dados sobre o status da umidade do solo para o usuário.
 
 ### 🌐 **Links do Projeto**
-- **Site do Projeto:** [Acesse aqui](https://bit.ly/Automação_WateringCan)
+- **Site do Projeto:** [Acesse aqui](http://44.206.253.220/MeuSite-V2/automacao.html)
 - **Front-end (Aplicativo):** [Código no GitHub](https://github.com/Leooliprado/regador_wifi_app)
 - **Back-end:** [Código no GitHub](https://github.com/Leooliprado/regador_wifi)
 - **Banco de Dados:** [Código no GitHub](https://github.com/Leooliprado/regador_banco)
