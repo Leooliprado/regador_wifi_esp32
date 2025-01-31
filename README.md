@@ -42,3 +42,5 @@ Para clonar o repositório principal do projeto, use o seguinte comando:
 ```bash
 git clone https://github.com/Leooliprado/regador_wifi_esp32.git
 ```
+
+
